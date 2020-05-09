@@ -7,33 +7,42 @@ import java.util.Scanner;
 
 
 public class Main {
-	public static ArrayList<String> listOfmovies = new ArrayList<>();
-	public static HashMap<String, String> actorMovie = new HashMap<>();
 
 	public static void main(String[] args) {
 		//create new instance of Movie Database
 		MovieDatabase myMovieDatabase = new MovieDatabase();
 		
-		//read info from file
+		//read info from files
 		try {
-			BufferedReader bufReader = new BufferedReader(new FileReader("movies"));
+			BufferedReader buffReaderMovies = new BufferedReader(new FileReader("movies"));
 			String line;
 			int i;
-			while((line = bufReader.readLine()) != null) {
+			while((line = buffReaderMovies.readLine()) != null) {
+				//on each iteration I need to create and object Actor.
+				Actor actor = new Actor();
+				Movie movie = new Movie();
 				i = line.indexOf(',');
-				actorMovie.put(line.substring(0, i), line.substring(i+1));
-				listOfmovies.add(line.substring(i+1));
+//				actor.setName(line.substring(0, i));
+//				System.out.println(actor.getName()); (line.substring(0, i), line.substring(i+1));
+				for(String mov: line.substring(i+1).split(",")) {
+					movie.setName(mov);
+					actor.setMovie(movie);
+					myMovieDatabase.setMovieList(movie);
+				}
+				myMovieDatabase.setActorList(actor);
 			}
-			bufReader.close();
+			buffReaderMovies.close();
+			
+			BufferedReader buffReaderRatings = new BufferedReader(new FileReader("ratings"));
+			
+			buffReaderRatings.close();
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage() );
 		}
 		
-		//now that we have hash map - let's
-		actorMovie.forEach((k,v) -> {
-			System.out.println("Key: " + k + "    Value: " + v);
-		});
-		System.out.println(listOfmovies.get(0));
+		System.out.println(myMovieDatabase.getMovieList());
+		System.out.println(myMovieDatabase.getActorList());
+
 	}
 
 }

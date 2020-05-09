@@ -16,8 +16,8 @@ public class Actor {
 	}
 
 	
-	public void setMovies(ArrayList<Movie> movies) {
-		this.movies = movies;
+	public void setMovie(Movie movie) {
+		movies.add(movie);
 	}
 	public ArrayList<Movie> getMovies() {
 		return movies;

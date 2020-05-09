@@ -21,7 +21,7 @@ public class MovieDatabase {
 		
 	}
 	
-	public String getBastActor() {//return one actor
+	public String getBestActor() {//return one actor
 		return "";//should be the name of actor that has the best average rating for their movies;
 	}
 	
@@ -34,16 +34,16 @@ public class MovieDatabase {
 		return movieList;
 	}
 
-	public void setMovieList(ArrayList<Movie> movieList) {
-		this.movieList = movieList;
+	public void setMovieList(Movie movie) {
+		movieList.add(movie);
 	}
 
 	public ArrayList<Actor> getActorList() {
 		return actorList;
 	}
 
-	public void setActorList(ArrayList<Actor> actorList) {
-		this.actorList = actorList;
+	public void setActorList(Actor actor) {
+		actorList.add(actor);
 	}
 
 	
