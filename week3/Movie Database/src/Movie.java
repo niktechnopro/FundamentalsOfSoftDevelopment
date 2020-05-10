@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Movie {
 	
-	public String name = "";
-	public ArrayList<Actor> actors = new ArrayList<>();
-	double rating;
+	private String name = "";
+	private ArrayList<Actor> actors = new ArrayList<>();
+	private double rating;
 	
 	public Movie() {
 		

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class MovieDatabase {
 	
-	public ArrayList<Movie> movieList = new ArrayList<>();
-	public ArrayList<Actor> actorList = new ArrayList<>();
+	private ArrayList<Movie> movieList = new ArrayList<>();
+	private ArrayList<Actor> actorList = new ArrayList<>();
 	
 	public MovieDatabase() {//creates an object with all this crap
 		

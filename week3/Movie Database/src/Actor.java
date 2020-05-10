@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Actor {
-	public String name = "Some actor";
-	public ArrayList<Movie> movies = new ArrayList<>();
+	private String name = "Some actor";
+	private ArrayList<Movie> movies = new ArrayList<>();
 	
 	public Actor() {//constructor
 		

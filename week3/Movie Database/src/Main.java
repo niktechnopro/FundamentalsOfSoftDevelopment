@@ -20,22 +20,42 @@ public class Main {
 			while((line = buffReaderMovies.readLine()) != null) {
 				//on each iteration I need to create and object Actor.
 				Actor actor = new Actor();
-				Movie movie = new Movie();
 				i = line.indexOf(',');
-//				actor.setName(line.substring(0, i));
-//				System.out.println(actor.getName()); (line.substring(0, i), line.substring(i+1));
+				actor.setName(line.substring(0, i));
 				for(String mov: line.substring(i+1).split(",")) {
+					Movie movie = new Movie();//creating new object for Movies
 					movie.setName(mov);
 					actor.setMovie(movie);
 					myMovieDatabase.setMovieList(movie);
 				}
 				myMovieDatabase.setActorList(actor);
+//				System.out.println(actor.getName()); //(line.substring(0, i), line.substring(i+1));
 			}
 			buffReaderMovies.close();
 			
+			//now we are going to read ratings;
 			BufferedReader buffReaderRatings = new BufferedReader(new FileReader("ratings"));
-			
+			i = 0;
+			line = "";
+			while((line = buffReaderRatings.readLine()) != null) {
+				if(!line.contentEquals("movie_name	critic_score")){//removes description
+					String[] partedLine = line.split("(?<=\\D)(?=\\d)");
+					System.out.println(partedLine[0]);
+					partedLine = null;
+				}
+			}
 			buffReaderRatings.close();
+			
+//			for (int a = 0; myMovieDatabase.getMovieList().size() > a; a++) {
+//				System.out.println(myMovieDatabase.getMovieList().get(a).getName());
+//			}
+//			
+//			
+//			for (int b = 0; myMovieDatabase.getActorList().size() > b; b++) {
+//				System.out.println(myMovieDatabase.getActorList().get(b).getName());
+//			}
+			
+			
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage() );
 		}
