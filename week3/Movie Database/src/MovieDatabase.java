@@ -10,7 +10,8 @@ public class MovieDatabase {
 	}
 	
 	public void addMovie(String name, String[] actors) {
-		
+		//now that we determined what move and actor to add, let's do that
+		System.out.println("moive: " + name + "actor: " + actors[0]);
 	}
 	
 	public void addRating(String name, String rating) {
