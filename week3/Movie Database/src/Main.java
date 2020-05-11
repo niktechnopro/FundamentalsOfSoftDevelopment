@@ -15,35 +15,16 @@ public class Main {
 		try{
 			BufferedReader buffReaderMovies = new BufferedReader(new FileReader("movies"));
 			String line;
-			String actor;
-			String movies;
 			ArrayList<String> allMovies = new ArrayList<>();
 			ArrayList<String> allActors = new ArrayList<>();
-			String [] moviesarr;
 			int i;
-////			first - building an array of actors and all movies;
-//			while((line = buffReaderMovies.readLine()) != null) {
-//				i = line.indexOf(',');//index of first ","
-//				allActors.add(line.substring(0,i).trim());
-//				moviesarr = line.substring(i+1).trim().split(",");
-//				for(String s : moviesarr) {
-//					if(!allMovies.contains(s)) {//removing duplicates
-//						allMovies.add(s.trim());
-//					}
-//				}
-//			}
-//			System.out.println(allMovies.toString());
-//			System.out.println(allActors.toString());
-			buffReaderMovies.close();
-			
 			//next step - cross reference each movie and add array of actors that was in it
 			HashMap<String, ArrayList<String>> movieActors = new HashMap<>();
-			buffReaderMovies = new BufferedReader(new FileReader("movies"));
 			while((line = buffReaderMovies.readLine()) != null) {
 				i = line.indexOf(',');//index of first ","
 				ArrayList<String> movieActor = new ArrayList<>();
+				allActors.add(line.substring(0,i).trim());
 				movieActor.add(line.substring(0,i).trim());
-				System.out.println(movieActor.toString());
 				for(String f : line.substring(i+1).split(",")){
 					if(allMovies.contains(f.trim())){//if movie is already in HashMap - do not add
 						for(int n = 0; n < movieActors.get(f.trim()).size(); n++) {
@@ -60,16 +41,26 @@ public class Main {
 			}
 			System.out.println(movieActors.toString());
 			System.out.println(allMovies.size());
-//			System.out.println(allMovies.get(1).split(","));
-//			for(String s : allMovies.get(1).split(",")) {
-//				System.out.println(s);
-//			}
-//			System.out.println(allActors.get(2));
-			
+			System.out.println(allActors);
 			//next step - movie is a key, and array of actors - value
-			
-			
 			buffReaderMovies.close();
+			
+			//next - read the ratings and then if movie is not in this list - populated it with 5
+			BufferedReader buffReaderRating = new BufferedReader(new FileReader("ratings"));
+			line = null;
+			HashMap<String, String> ratingsMap = new HashMap<>();
+			while((line = buffReaderRating.readLine()) != null) {
+				if(!line.contentEquals("movie_name	critic_score")){//removes description
+					ratingsMap.put(line.split("(?<=\\D)(?=\\d)")[0].trim(), line.split("(?<=\\D)(?=\\d)")[1].trim());
+				}
+			}
+			System.out.println(ratingsMap.toString());
+			
+			//next - iterate through allMovies arrays - and to ratingsMap what is missing;
+			
+			
+			
+			buffReaderRating.close();
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage());
 		}
