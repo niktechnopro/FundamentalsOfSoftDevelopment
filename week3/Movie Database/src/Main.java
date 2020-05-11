@@ -43,20 +43,21 @@ public class Main {
 				i = line.indexOf(',');//index of first ","
 				ArrayList<String> movieActor = new ArrayList<>();
 				movieActor.add(line.substring(0,i).trim());
+				System.out.println(movieActor.toString());
 				for(String f : line.substring(i+1).split(",")){
-					if(!movieActors.containsKey(f.trim())){//if movie is not already in HashMap - add actor
-						System.out.println("add this movie: " + f.trim() + " actor: " + line.substring(0,i));
-						allMovies.add(f.trim());
-						movieActors.put(f.trim(), movieActor);//(f.trim(), movieActor.add(line.substring(0,i)));
-					}else {
-						if(!movieActors.get(f.trim()).contains(line.substring(0,i).trim())) {
-							movieActors.get(f.trim()).add(line.substring(0,i).trim());
+					if(allMovies.contains(f.trim())){//if movie is already in HashMap - do not add
+						for(int n = 0; n < movieActors.get(f.trim()).size(); n++) {
+							if(!movieActor.contains(movieActors.get(f.trim()).get(n))) {
+								movieActor.add(movieActors.get(f.trim()).get(n));
+							}
 						}
+						movieActors.replace(f.trim(), movieActor);
+					} else {
+						allMovies.add(f.trim());
+						movieActors.put(f.trim(), movieActor);
 					}
-				}		
+				}
 			}
-//				movieActors.put(allMovies.get(g), movieActor);
-			
 			System.out.println(movieActors.toString());
 			System.out.println(allMovies.size());
 //			System.out.println(allMovies.get(1).split(","));
@@ -66,10 +67,6 @@ public class Main {
 //			System.out.println(allActors.get(2));
 			
 			//next step - movie is a key, and array of actors - value
-			
-			
-			
-			
 			
 			
 			buffReaderMovies.close();
