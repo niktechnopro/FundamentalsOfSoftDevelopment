@@ -18,10 +18,18 @@ public class Main {
 			ArrayList<String> allMovies = new ArrayList<>();
 			ArrayList<String> allActors = new ArrayList<>();
 			int i;
-			//next step - cross reference each movie and add array of actors that was in it
+			//cross reference each movie and add array of actors that was in it
 			HashMap<String, ArrayList<String>> movieActors = new HashMap<>();
+			//actor to movies reference
+			HashMap<String, ArrayList<String>> actorMovie = new HashMap<>();
 			while((line = buffReaderMovies.readLine()) != null) {
+				//the following logic is for 
 				i = line.indexOf(',');//index of first ","
+				ArrayList<String> movies = new ArrayList<>();
+				movies.add(line.substring(i+1));
+				actorMovie.put(line.substring(0,i), movies);
+				
+				//cross reference movie to actors - movie is a key, and array of actors - value
 				ArrayList<String> movieActor = new ArrayList<>();
 				allActors.add(line.substring(0,i).trim());
 				movieActor.add(line.substring(0,i).trim());
@@ -39,10 +47,10 @@ public class Main {
 					}
 				}
 			}
+			buffReaderMovies.close();
 			System.out.println("movie actors: " + movieActors.toString());
 			System.out.println("all actors: " + allActors);
-			//next step - movie is a key, and array of actors - value
-			buffReaderMovies.close();
+			System.out.println("actor - movie: " + actorMovie.toString());
 			
 			//next - read the ratings and then if movie is not in this list - populated it with 5
 			BufferedReader buffReaderRating = new BufferedReader(new FileReader("ratings"));
@@ -53,6 +61,7 @@ public class Main {
 					ratingsMap.put(line.split("(?<=\\D)(?=\\d)")[0].trim(), line.split("(?<=\\D)(?=\\d)")[1].trim());
 				}
 			}
+			buffReaderRating.close();
 			
 			//next - iterate through allMovies arrays - and add to ratingsMap what is missing;
 			for (int k = 0; allMovies.size() > k; k++) {
@@ -63,7 +72,15 @@ public class Main {
 			}
 			System.out.println(ratingsMap);
 			
-			buffReaderRating.close();
+			//next - create Actor Objects - it takes an Actor's Name and Array of Movie objects;
+			//Movie object has Movie name, array of Actors and Rating;
+			
+			
+			
+			
+			
+			
+			
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage());
 		}

@@ -15,11 +15,14 @@ public class Actor {
 		return name;
 	}
 
-	
-	public void setMovie(Movie movie) {
-		movies.add(movie);
-	}
 	public ArrayList<Movie> getMovies() {
 		return movies;
 	}
+
+	public void setMovies(ArrayList<Movie> movies) {
+		this.movies = movies;
+	}
+
+	
+	
 }
