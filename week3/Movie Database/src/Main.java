@@ -39,9 +39,8 @@ public class Main {
 					}
 				}
 			}
-			System.out.println(movieActors.toString());
-			System.out.println(allMovies.size());
-			System.out.println(allActors);
+			System.out.println("movie actors: " + movieActors.toString());
+			System.out.println("all actors: " + allActors);
 			//next step - movie is a key, and array of actors - value
 			buffReaderMovies.close();
 			
@@ -54,11 +53,15 @@ public class Main {
 					ratingsMap.put(line.split("(?<=\\D)(?=\\d)")[0].trim(), line.split("(?<=\\D)(?=\\d)")[1].trim());
 				}
 			}
-			System.out.println(ratingsMap.toString());
 			
-			//next - iterate through allMovies arrays - and to ratingsMap what is missing;
-			
-			
+			//next - iterate through allMovies arrays - and add to ratingsMap what is missing;
+			for (int k = 0; allMovies.size() > k; k++) {
+				if(!ratingsMap.containsKey(allMovies.get(k))){
+					ratingsMap.put(allMovies.get(k), String.valueOf(63));
+					
+				}
+			}
+			System.out.println(ratingsMap);
 			
 			buffReaderRating.close();
 		}catch(IOException ex){
@@ -73,7 +76,7 @@ public class Main {
 }
 
 
-//first - will create an array of all movies in myMovieDatabase from movies with no duplicates;
+//first - create an array of all movies in myMovieDatabase from movies with no duplicates;
 //second - create an array of actors for each movie;
 
 //movie - key; actors = value;
