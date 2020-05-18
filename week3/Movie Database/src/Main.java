@@ -36,6 +36,7 @@ public class Main {
 						Movie m = new Movie();
 						m.setName(movie.trim());
 						movieObjects.add(m);
+						movies.add(m);
 					}else {
 						//find it in array and add to movies
 						for(Movie mo : movieObjects) {
@@ -44,6 +45,9 @@ public class Main {
 							}
 						}
 					}
+				}
+				if (line.substring(0,i).equals("Sidney Poitier")) {
+					System.out.println("this hits" + movies);
 				}
 				actorMovie.put(line.substring(0,i), movies);
 				//cross reference movie to actors - movie is a key, and array of actors - value
@@ -94,22 +98,18 @@ public class Main {
 				actor.setMovies(actorMovie.get(allActors.get(f)));
 			}	
 			
-			//Movie object has Movie name, array of Actors and Rating;
-			System.out.println(movieActors);
-			for (int q = 0; q < allMovies.size(); q++) {
-//				System.out.println(allMovies.get(q));
-//				for (String g : movieActors.get(allMovies.get(q)) ) {
-//					System.out.println("g: " + g);
-//				}	
-			}
+//			Movie object has Movie name, array of Actors and Rating;
+//			for (int q = 0; q < allMovies.size(); q++) {
+//				if()
+//			}
 			
 			
-			System.out.println("movie actors: " + movieActors.size());
+			System.out.println("movie actors: " + movieActors);
 //			System.out.println("all actors: " + allActors);
 			System.out.println("actor - movie: " + actorMovie.toString());
 			System.out.println("movie objects: " + movieObjects.size());
 			System.out.println("movies: " + allMovies.size());
-			System.out.println("helper: " + movieObjectsHelper.size());
+//			System.out.println("helper: " + movieObjectsHelper.size());
 			
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage());
