@@ -18,13 +18,16 @@ public class Main {
 			String line;
 			ArrayList<String> allMovies = new ArrayList<>();
 			ArrayList<String> allActors = new ArrayList<>();
+			ArrayList<Actor> allActorObjects = new ArrayList<>();
 			ArrayList<String> movieObjectsHelper = new ArrayList<>();
 			ArrayList<Movie> movieObjects = new ArrayList<>();
+			HashMap<String, ArrayList<Actor>> movieActorObjects = new HashMap<>();
 			int i;
 			//cross reference each movie and add array of actors that was in it
 			HashMap<String, ArrayList<String>> movieActors = new HashMap<>();
 			//actor to movies reference
 			HashMap<String, ArrayList<Movie>> actorMovie = new HashMap<>();
+			HashMap<Actor, ArrayList<Movie>> actorMovieObject = new HashMap<>();
 			while((line = buffReaderMovies.readLine()) != null) {
 				//the following logic is for 
 				i = line.indexOf(',');//index of first ","
@@ -46,25 +49,47 @@ public class Main {
 						}
 					}
 				}
-				if (line.substring(0,i).equals("Sidney Poitier")) {
-					System.out.println("this hits" + movies);
-				}
-				actorMovie.put(line.substring(0,i), movies);
+				actorMovie.put(line.substring(0,i).trim(), movies);
+				
+				
+				
+				//next we are going to make HashMap with movie = [Actors];
+				Actor actor = new Actor();
+				actor.setName(line.substring(0,i).trim());
+				System.out.println("actor:    " + actor.getName());
+				allActorObjects.add(actor);
+				
+				allActors.add(line.substring(0,i).trim());
 				//cross reference movie to actors - movie is a key, and array of actors - value
 				ArrayList<String> movieActor = new ArrayList<>();
-				allActors.add(line.substring(0,i).trim());
+				ArrayList<Actor> mvActorObj = new ArrayList<>();
+				
 				movieActor.add(line.substring(0,i).trim());
 				for(String f : line.substring(i+1).split(",")){
 					if(allMovies.contains(f.trim())){//if movie is already in HashMap - do not add
 						for(int n = 0; n < movieActors.get(f.trim()).size(); n++) {
 							if(!movieActor.contains(movieActors.get(f.trim()).get(n))) {
 								movieActor.add(movieActors.get(f.trim()).get(n));
+								
+								
+								
+								//add logic working with Objects
+								//1.index for ActorObject should be the same as for regular ArrayList
+								//2.Let's iterate through Array of Actor objects and place the same Object instead of name
+								for (Actor act : allActorObjects) {
+									if(movieActors.get(f.trim()).get(n).equals(act.getName())) {
+										mvActorObj.add(act);
+									}
+								}
 							}
 						}
 						movieActors.replace(f.trim(), movieActor);
+						movieActorObjects.replace(f.trim(), mvActorObj);
 					} else {
 						allMovies.add(f.trim());
 						movieActors.put(f.trim(), movieActor);
+						//for movie = [Actors];
+						movieActorObjects.put(f.trim(), mvActorObj);
 					}
 				}
 			}
@@ -89,26 +114,40 @@ public class Main {
 				}
 			}
 //			System.out.println(ratingsMap);
-			
+			ArrayList<Actor> actorObjects = new ArrayList<>();
 			//next - create Actor Objects - it takes an Actor's Name and Array of Movie objects;
 			for (int f = 0; f < allActors.size(); f++) {
 //				System.out.println(" movies: " + actorMovie.get(allActors.get(f)) + " actor: " + allActors.get(f));
 				Actor actor = new Actor();
 				actor.setName(allActors.get(f));
 				actor.setMovies(actorMovie.get(allActors.get(f)));
+				actorObjects.add(actor);
 			}	
 			
-//			Movie object has Movie name, array of Actors and Rating;
-//			for (int q = 0; q < allMovies.size(); q++) {
-//				if()
+//			Movie object has Movie name, array  Rating and Actors Array;
+			for (int q = 0; q < movieObjects.size(); q++) {
+				//set rating
+				movieObjects.get(q).setRating(ratingsMap.get(movieObjects.get(q).getName()));
+				//substitute array of actors for Actor Objects
+				//iterate through actorMovie;
+//				System.out.println(movieObjects.get(q).getActors());
+			}
+			
+			//movie - actor - movie and array of actors;
+			
+//			for (Movie m : movieObjects) {
+//				System.out.println("movie: " + m.getName() + " rating: " + m.getRating());
 //			}
 			
-			
+			System.out.println("actor objects: " + actorObjects);
 			System.out.println("movie actors: " + movieActors);
-//			System.out.println("all actors: " + allActors);
+			System.out.println("all actors: " + allActors);
 			System.out.println("actor - movie: " + actorMovie.toString());
-			System.out.println("movie objects: " + movieObjects.size());
+			System.out.println("movie objects: " + movieObjects);
 			System.out.println("movies: " + allMovies.size());
+			System.out.println("movie actors Obj: " + movieActorObjects.get("Superman").get(0).getName());
+			
+			
 //			System.out.println("helper: " + movieObjectsHelper.size());
 			
 		}catch(IOException ex){
