@@ -25,8 +25,7 @@ public class Main {
 			int i;
 			//cross reference each movie and add array of actors that was in it
 			HashMap<String, ArrayList<String>> movieActors = new HashMap<>();
-			//actor to movies reference
-			HashMap<String, ArrayList<Movie>> actorMovie = new HashMap<>();
+			HashMap<String, ArrayList<Movie>> actorMovie = new HashMap<>();//actor to movies reference
 			HashMap<Actor, ArrayList<Movie>> actorMovieObject = new HashMap<>();
 			while((line = buffReaderMovies.readLine()) != null) {
 				//the following logic is for 
@@ -56,39 +55,44 @@ public class Main {
 				//next we are going to make HashMap with movie = [Actors];
 				Actor actor = new Actor();
 				actor.setName(line.substring(0,i).trim());
-				System.out.println("actor:    " + actor.getName());
 				allActorObjects.add(actor);
 				
 				allActors.add(line.substring(0,i).trim());
 				//cross reference movie to actors - movie is a key, and array of actors - value
 				ArrayList<String> movieActor = new ArrayList<>();
 				ArrayList<Actor> mvActorObj = new ArrayList<>();
-				
 				movieActor.add(line.substring(0,i).trim());
+				mvActorObj.add(actor);
+				
+				
+				
 				for(String f : line.substring(i+1).split(",")){
-					if(allMovies.contains(f.trim())){//if movie is already in HashMap - do not add
-						for(int n = 0; n < movieActors.get(f.trim()).size(); n++) {
+					if(allMovies.contains(f.trim())){//check if movie is in Array already
+//						System.out.println(f.trim());
+						for(int n = 0; n < movieActors.get(f.trim()).size(); n++) {//if movie is already in HashMap - do not add
 							if(!movieActor.contains(movieActors.get(f.trim()).get(n))) {
 								movieActor.add(movieActors.get(f.trim()).get(n));
-								
-								
-								
-								//add logic working with Objects
-								//1.index for ActorObject should be the same as for regular ArrayList
-								//2.Let's iterate through Array of Actor objects and place the same Object instead of name
+//								
+//								
+//								
+//								//add logic working with Objects
+//								//1.index for ActorObject should be the same as for regular ArrayList
+//								//2.Let's iterate through Array of Actor objects and place the same Object instead of name
+//
 								for (Actor act : allActorObjects) {
-									if(movieActors.get(f.trim()).get(n).equals(act.getName())) {
+									if(act.getName().equals(movieActors.get(f.trim()).get(n))) {
 										mvActorObj.add(act);
 									}
 								}
 							}
 						}
+//						System.out.println(f.trim() + " : " + mvActorObj);
 						movieActors.replace(f.trim(), movieActor);
 						movieActorObjects.replace(f.trim(), mvActorObj);
-					} else {
+					} else {//if not in array - add it
 						allMovies.add(f.trim());
 						movieActors.put(f.trim(), movieActor);
-						//for movie = [Actors];
+//						//for movie = [Actors];
 						movieActorObjects.put(f.trim(), mvActorObj);
 					}
 				}
@@ -139,13 +143,14 @@ public class Main {
 //				System.out.println("movie: " + m.getName() + " rating: " + m.getRating());
 //			}
 			
-			System.out.println("actor objects: " + actorObjects);
+//			System.out.println("actor objects: " + actorObjects);
 			System.out.println("movie actors: " + movieActors);
-			System.out.println("all actors: " + allActors);
-			System.out.println("actor - movie: " + actorMovie.toString());
-			System.out.println("movie objects: " + movieObjects);
-			System.out.println("movies: " + allMovies.size());
-			System.out.println("movie actors Obj: " + movieActorObjects.get("Superman").get(0).getName());
+//			System.out.println("all actors: " + allActors.size());
+//			System.out.println("all actors objects: " + allActorObjects.size());
+//			System.out.println("actor - movie: " + actorMovie.toString());
+//			System.out.println("movie objects: " + movieObjects);
+//			System.out.println("movies: " + allMovies.size());
+			System.out.println("movie actors Obj: " + movieActorObjects);
 			
 			
 //			System.out.println("helper: " + movieObjectsHelper.size());
