@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MovieDatabase {
 	
@@ -11,7 +12,12 @@ public class MovieDatabase {
 	
 	public void addMovie(String name, String[] actors) {
 		//now that we determined what move and actor to add, let's do that
-		System.out.println("movie name: " + name + "actor: " + actors);
+		System.out.println("movie name: " + name + ", actor: " + Arrays.deepToString(actors));
+		
+		
+		
+		
+		
 	}
 	
 	public void addRating(String name, String rating) {
