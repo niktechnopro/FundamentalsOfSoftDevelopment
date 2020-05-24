@@ -119,7 +119,7 @@ public class Main {
 //			System.out.println(myMovieDatabase.getMovieList());
 			//iterate through movieActor HashMap and convert ArrayList into Array;
 //			movieActor.forEach((k, v) -> System.out.println("key: " + k + " value: " + v));
-			movieActor.forEach((k, v) -> myMovieDatabase.addMovie(k, v.toArray(new String[v.size()])));
+//			movieActor.forEach((k, v) -> myMovieDatabase.addMovie(k, v.toArray(new String[v.size()])));
 			
 //			for (String key : movieActor.keySet()) {
 //				myMovieDatabase.addMovie(key, movieActor.get(key).toArray(new String[movieActor.get(key).size()]));
@@ -149,6 +149,9 @@ public class Main {
 		
 		//let's test if we can add rating
 //		myMovieDatabase.updateRating("Inglourious Basterds", 90.0);
+		
+		String[] cars = {"Volvo", "BMW", "Ford", "Mazda", "Diane Kruger"};
+		myMovieDatabase.addMovie("Inglourious Basterds", cars);
 		
 		System.out.println("Best rated movie is: " + myMovieDatabase.getBestMovie());
 		System.out.println("Best actor is: " + myMovieDatabase.getBestActor());

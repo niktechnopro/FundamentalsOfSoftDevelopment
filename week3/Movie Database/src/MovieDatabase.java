@@ -13,7 +13,49 @@ public class MovieDatabase {
 	public void addMovie(String name, String[] actors) {
 		//now that we determined what move and actor to add, let's do that
 //		System.out.println("movie name: " + name + ", actor: " + Arrays.deepToString(actors));
+		Movie newMovie = null;
+		ArrayList<Movie> mvs = new ArrayList<>();
+		for (Movie m : movieList) {
+			if(m.getName().equals(name.trim())) {
+//				System.out.println("we found match - movie already exists in the list: " + m.getName());
+			}else {
+				//the movie is not in the list - need to create an object and add it to movieList
+//				System.out.println("the movie is not in the list - we need to add it");
+				newMovie = new Movie();
+			}
+		}
+		if(newMovie != null) {
+			movieList.add(newMovie);
+			mvs.add(newMovie);//local array
 		
+			//now dealing with actors
+			//check if new Actor is in actorList
+			//System.out.println(Arrays.toString(actors));
+			ArrayList<Actor> newActors = new ArrayList<>();
+			for (String actor : actors) {
+				String newActor = "";
+				int idx = 0;
+				for (int aidx = 0; actorList.size() > aidx; aidx++) {
+					if(actorList.get(aidx).getName().contentEquals(actor.trim())) {
+						idx = aidx;
+						newActor = "exists";
+					}else {
+						newActor = actor;
+					}
+				}
+				if (!newActor.contentEquals("exists")) {//if this is new Actor
+//					System.out.println("create new actor: " + newActor);
+					Actor atr = new Actor();
+					atr.setName(newActor);
+					atr.setMovies(mvs);
+					newActors.add(atr);
+				}else{
+//					System.out.println("add movie to already existing actor: " + actorList.get(idx).getName());
+					newActors.add(actorList.get(idx));
+				}
+			}
+			newMovie.setActors(newActors);
+		}
 	}
 	
 	public void addRating(String name, double rating) {
@@ -65,7 +107,7 @@ public class MovieDatabase {
 			}
 		}
 		for(Movie m : movieList) {
-			System.out.println(m.getName() + " : " + m.getRating());
+//			System.out.println(m.getName() + " : " + m.getRating());
 			if(m.getRating() == highest) {
 				bestRatedMovie = m.getName();
 			}
@@ -91,11 +133,6 @@ public class MovieDatabase {
 		this.actorList = actorList;
 	}
 	
-//	getters and setters
-	
-
-	
-
 }
 
 
