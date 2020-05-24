@@ -16,23 +16,65 @@ public class MovieDatabase {
 		
 	}
 	
-	public void addRating(String name, String rating) {
-		//add rating to a movie
+	public void addRating(String name, double rating) {
+		//double dnum = Double.parseDouble(str); // to convert string to double
+//		System.out.println("Movie: " + name + ", rating: " + rating);
+		for (Movie m : movieList) {
+			if(m.getName().contentEquals(name)) {
+				m.setRating(rating);
+			}
+		}
 		
 	}
 	
 	public void updateRating(String name, double newRating) {
-		
+		//to update rating - find Movie in movieList and update rating
+		for (Movie m : movieList) {
+			if(m.getName().equals(name)) {
+				m.setRating(newRating);
+			}
+		}
 	}
 	
 	public String getBestActor() {//return one actor
-		return "";//should be the name of actor that has the best average rating for their movies;
+		// iterate over actorList and, calculate average from movies and 
+		double highestRating = 0.0;
+		double actorRating = 0.0;
+		String bestActor = "";
+		for(Actor a : actorList) {
+//			System.out.println("movies: " + a.getMovies());
+			for (Movie m : a.getMovies()) {
+//				System.out.println("movie: " + m.getName() + " " + m.getRating()); 
+				actorRating = (actorRating + m.getRating())/a.getMovies().size();
+			}
+			if(actorRating > highestRating) {
+				highestRating = actorRating;
+				bestActor = a.getName();
+			}
+		}
+		return bestActor;//should be the name of actor that has the best average rating for their movies;
 	}
 	
 	public String getBestMovie() {//return one movie
-		return "";//should be the name of the movie with the highest rating
+		//should be the name of the movie with the highest rating
+		double highest = 0.0;
+		String bestRatedMovie = "";
+		for (Movie m : movieList) {
+			if(m.getRating() > highest) {
+				highest = m.getRating();//determined the highest rating in Movie objects
+			}
+		}
+		for(Movie m : movieList) {
+			System.out.println(m.getName() + " : " + m.getRating());
+			if(m.getRating() == highest) {
+				bestRatedMovie = m.getName();
+			}
+		}
+		return bestRatedMovie;
 	}
 
+	
+	//getters and setters
 	public ArrayList<Movie> getMovieList() {
 		return movieList;
 	}

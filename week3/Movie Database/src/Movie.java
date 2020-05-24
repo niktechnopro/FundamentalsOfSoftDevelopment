@@ -4,7 +4,7 @@ public class Movie {
 	
 	private String name = "";
 	private ArrayList<Actor> actors = new ArrayList<>();
-	private String rating;
+	private double rating;
 	
 	public Movie() {
 		
@@ -26,10 +26,10 @@ public class Movie {
 	}
 
 	
-	public void setRating(String rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
-	public String getRating() {
+	public double getRating() {
 		return rating;
 	}
 }

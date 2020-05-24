@@ -55,11 +55,11 @@ public class Main {
 			}
 			buffReaderMovies.close();
 			
-			System.out.println("movie - actor: " + movieActor.size());
-			System.out.println("actor - movie: " + actorMovie);
-			System.out.println("all movies: " + allMovies.size());
-			System.out.println("all actors: " + allActors);
-			
+//			System.out.println("movie - actor: " + movieActor.size());
+//			System.out.println("actor - movie: " + actorMovie);
+//			System.out.println("all movies: " + allMovies.size());
+//			System.out.println("all actors: " + allActors);
+//			
 			
 			//once we have all movies and actor-movies hash map - create object actor and populate ArrayList<Actor>
 			ArrayList<Actor> actorList = new ArrayList<>();
@@ -76,7 +76,7 @@ public class Main {
 				Movie movie = new Movie();
 				movie.setName(mov);
 				for(String act : movieActor.get(mov)) {
-					System.out.println("actor: " + act);
+//					System.out.println("actor: " + act);
 					for (Actor a : actorList) {
 						if(act.contentEquals(a.getName())) {
 							actors.add(a);
@@ -88,12 +88,12 @@ public class Main {
 			}
 			
 			
-			System.out.println("movieList: " + movieList);
+//			System.out.println("movieList: " + movieList);
 			
 			//let's add movie objects to actorList
 			for (Actor a : actorList) {
 				ArrayList<Movie> mov = new ArrayList<>();
-				System.out.println(actorMovie.get(a.getName()));
+//				System.out.println(actorMovie.get(a.getName()));
 				for (Movie m : movieList) {
 					for(String mo : actorMovie.get(a.getName())){
 						if(m.getName().equals(mo)){
@@ -109,13 +109,14 @@ public class Main {
 //				System.out.println(m.getName());
 //			}
 			
+			
 			//set movieList and actorList
 			myMovieDatabase.setMovieList(movieList);
 			myMovieDatabase.setActorList(actorList);
 			
 			//get these lists back to see what happens
-			System.out.println(myMovieDatabase.getActorList());
-			System.out.println(myMovieDatabase.getMovieList());
+//			System.out.println(myMovieDatabase.getActorList());
+//			System.out.println(myMovieDatabase.getMovieList());
 			//iterate through movieActor HashMap and convert ArrayList into Array;
 //			movieActor.forEach((k, v) -> System.out.println("key: " + k + " value: " + v));
 			movieActor.forEach((k, v) -> myMovieDatabase.addMovie(k, v.toArray(new String[v.size()])));
@@ -124,12 +125,33 @@ public class Main {
 //				myMovieDatabase.addMovie(key, movieActor.get(key).toArray(new String[movieActor.get(key).size()]));
 //			}
 			
+			//next - read the ratings and then if movie is not in this list - populated it with 5
+			//double dnum = Double.parseDouble(str); // to convert string to double
+			BufferedReader buffReaderRating = new BufferedReader(new FileReader("ratings"));
+			line = null;
+			HashMap<String, Double> ratingsMap = new HashMap<>();
+			while((line = buffReaderRating.readLine()) != null) {
+				if(!line.contentEquals("movie_name	critic_score")){//removes description
+					ratingsMap.put(line.split("(?<=\\D)(?=\\d)")[0].trim(), Double.parseDouble(line.split("(?<=\\D)(?=\\d)")[1].trim()));
+					myMovieDatabase.addRating(line.split("(?<=\\D)(?=\\d)")[0].trim(), Double.parseDouble(line.split("(?<=\\D)(?=\\d)")[1].trim()));
+				}
+			}
+			buffReaderRating.close();
+			
+//			ratingsMap.forEach((k, v) -> myMovieDatabase.addRating(k, v));
+//			System.out.println("ratingsMap: " + ratingsMap);
+			
 			
 		}catch(IOException ex){
 			System.out.println("some exceptions here " + ex.getMessage());
 		}
 		
 		
+		//let's test if we can add rating
+//		myMovieDatabase.updateRating("Inglourious Basterds", 90.0);
+		
+		System.out.println("Best rated movie is: " + myMovieDatabase.getBestMovie());
+		System.out.println("Best actor is: " + myMovieDatabase.getBestActor());
 
 	}
 
