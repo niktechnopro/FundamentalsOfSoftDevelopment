@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,6 +16,8 @@ public class Main {
 		int idx;
 		try {
 			//read the movie.txt
+			ArrayList<String> allMovies = new ArrayList<>();
+			ArrayList<String> allActors = new ArrayList<>();
 			BufferedReader buffReaderMovies = new BufferedReader(new FileReader("movies"));
 			String line;
 			HashMap<String, ArrayList<String>> actorMovie = new HashMap<>();
@@ -25,8 +28,14 @@ public class Main {
 				ArrayList<String> movies = new ArrayList<>();
 				for (int n = 0; line.substring(idx+1).split(",").length > n; n++) {
 					movies.add(line.substring(idx+1).split(",")[n].trim());
+					if(!allMovies.contains(line.substring(idx+1).split(",")[n].trim())) {
+						allMovies.add(line.substring(idx+1).split(",")[n].trim());
+					}
 				}
 				actorMovie.put(line.substring(0,idx).trim(), movies);
+				if(!allActors.contains(line.substring(0,idx).trim())) {
+					allActors.add(line.substring(0,idx).trim());
+				}
 				
 				//sorting to movie-actors
 				for (String m : movies) {
@@ -46,13 +55,74 @@ public class Main {
 			}
 			buffReaderMovies.close();
 			
-//			System.out.println("movie - actor: " + movieActor);
-//			System.out.println("actor - movie: " + actorMovie);
+			System.out.println("movie - actor: " + movieActor.size());
+			System.out.println("actor - movie: " + actorMovie);
+			System.out.println("all movies: " + allMovies.size());
+			System.out.println("all actors: " + allActors);
 			
+			
+			//once we have all movies and actor-movies hash map - create object actor and populate ArrayList<Actor>
+			ArrayList<Actor> actorList = new ArrayList<>();
+			for (String actor : allActors) {
+				Actor act = new Actor();
+				act.setName(actor);
+				actorList.add(act);
+			}
+			
+			//set up Movie objects
+			ArrayList<Movie> movieList = new ArrayList<>();
+			for (String mov : allMovies) {
+				ArrayList<Actor> actors = new ArrayList<>();
+				Movie movie = new Movie();
+				movie.setName(mov);
+				for(String act : movieActor.get(mov)) {
+					System.out.println("actor: " + act);
+					for (Actor a : actorList) {
+						if(act.contentEquals(a.getName())) {
+							actors.add(a);
+						}
+					}
+				}
+				movie.setActors(actors);
+				movieList.add(movie);
+			}
+			
+			
+			System.out.println("movieList: " + movieList);
+			
+			//let's add movie objects to actorList
+			for (Actor a : actorList) {
+				ArrayList<Movie> mov = new ArrayList<>();
+				System.out.println(actorMovie.get(a.getName()));
+				for (Movie m : movieList) {
+					for(String mo : actorMovie.get(a.getName())){
+						if(m.getName().equals(mo)){
+							mov.add(m);
+						}
+					}
+				}
+				a.setMovies(mov);
+			}
+			
+//			System.out.println(actorList.get(0).getName());
+//			for (Movie m : actorList.get(0).getMovies()) {
+//				System.out.println(m.getName());
+//			}
+			
+			//set movieList and actorList
+			myMovieDatabase.setMovieList(movieList);
+			myMovieDatabase.setActorList(actorList);
+			
+			//get these lists back to see what happens
+			System.out.println(myMovieDatabase.getActorList());
+			System.out.println(myMovieDatabase.getMovieList());
 			//iterate through movieActor HashMap and convert ArrayList into Array;
-			movieActor.forEach((k, v) -> System.out.println("key: " + k + " value: " + v));
+//			movieActor.forEach((k, v) -> System.out.println("key: " + k + " value: " + v));
 			movieActor.forEach((k, v) -> myMovieDatabase.addMovie(k, v.toArray(new String[v.size()])));
 			
+//			for (String key : movieActor.keySet()) {
+//				myMovieDatabase.addMovie(key, movieActor.get(key).toArray(new String[movieActor.get(key).size()]));
+//			}
 			
 			
 		}catch(IOException ex){
