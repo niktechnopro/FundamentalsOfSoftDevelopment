@@ -135,7 +135,7 @@ public class BinaryTree<E extends Comparable<E>> {
 	protected Node findNode(Node n, E val) {
 		if(n == null) return null;
 		if(n.value.compareTo(val) == 0) {
-			System.out.println("the node we were looking for: " + n.value);
+//			System.out.println("the node we were looking for: " + n.value);
 			return n;
 		}else if(n.value.compareTo(val) > 0) {
 			return findNode(n.leftChild, val);
@@ -171,11 +171,35 @@ public class BinaryTree<E extends Comparable<E>> {
 	
 	// Method #3. finding the height of the node from the bottom
 	protected int height(E val) {
-
-		/* IMPLEMENT THIS METHOD! */
-			
-		return -2; // this line is here only so this code will compile if you don't modify it
+		//we just need to check if node has children and keep going down
+		//let's get the Node that contains that value and check if it has children
+		Node ourNode = findNode(val);
+		//next we can invoke traverseInOrder
+		int heightLeft = 0;
+		int heightRight = 0;
+		if (ourNode.leftChild != null) {
+			heightLeft = traverseInOrderHeight(ourNode, 0);//where 0 is a starting height
+		}
+		if (ourNode.rightChild != null) {
+			heightRight = traverseInOrderHeight(ourNode, 0);
+		}
+		int height = (heightLeft > heightRight) ? heightLeft : heightRight;
+		System.out.println("height: " + height + " for value: " + val);
+		return height; // this line is here only so this code will compile if you don't modify it
 	}
+	
+	protected int traverseInOrderHeight(Node n, int height) {
+		if(n.leftChild != null) {//check if left child exists
+			height ++;
+			return traverseInOrderHeight(n.leftChild, height);
+		}
+		if (n.rightChild != null){//check if right child exists
+			height ++;
+			return traverseInOrderHeight(n.rightChild, height);
+		}
+		return height;
+	}
+	
 	//end of METHOD#3
 	
 	
@@ -194,8 +218,9 @@ public class BinaryTree<E extends Comparable<E>> {
 	    
 	    System.out.println("root value: " + tree.root.value);
 //	    tree.findNode(2);
-	    tree.depth(2);
+	    tree.depth(3);
+	    tree.height(6);
+	    
 	}
 
 }
-
