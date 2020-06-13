@@ -157,6 +157,7 @@ public class BinaryTree<E extends Comparable<E>> {
 	}
 	
 	protected int traverseInOrder(Node n, int depth, E val) {
+		
 		if(n.value.compareTo(val) == 0 ) return depth;
 		depth ++;	
 		if(n.value.compareTo(val) > 0){
@@ -169,8 +170,9 @@ public class BinaryTree<E extends Comparable<E>> {
 	}
 	//end of finding depth
 	
-	// Method #3. finding the height of the node from the bottom
-	protected int height(E val) {
+	// Method #3. which is the greatest number of nodes between that node and any descendant node that is a leaf
+	protected int height(E val) {//height of the leaf = 0
+		if (val == null) return -1; 
 		//we just need to check if node has children and keep going down
 		//let's get the Node that contains that value and check if it has children
 		Node ourNode = findNode(val);
@@ -205,21 +207,26 @@ public class BinaryTree<E extends Comparable<E>> {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		//test array
+		int [] testArray = new int[] {8,6,4,16,2,20,10,12,9};
 		BinaryTree tree = new BinaryTree();
-		tree.add(6);
-		tree.add(2);
-	    tree.add(4);
-	    tree.add(8);
-	    tree.add(3);
-	    tree.add(5);
-	    tree.add(7);
-	    tree.add(9);
+//		tree.add(6);
+//		tree.add(2);
+//	    tree.add(4);
+//	    tree.add(8);
+//	    tree.add(3);
+//	    tree.add(5);
+//	    tree.add(7);
+//	    tree.add(9);
+		for(int i = 0; i < testArray.length; i++) {//populate/create binary tree
+			tree.add(testArray[i]);
+		}
 	    
 	    
 	    System.out.println("root value: " + tree.root.value);
 //	    tree.findNode(2);
-	    tree.depth(3);
-	    tree.height(6);
+	    tree.depth(12);
+	    tree.height(16);
 	    
 	}
 
