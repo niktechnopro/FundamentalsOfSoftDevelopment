@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -15,7 +17,6 @@ public class Analyzer {
 	 * Implement this method in Part 1
 	 */
 	public static List<Sentence> readFile(String filename) {
-		System.out.println("passing name of the file here: " + filename);
 		/* IMPLEMENT THIS METHOD! */
 		List<Sentence> sentences = new ArrayList<>(); 
 		try {
@@ -43,11 +44,54 @@ public class Analyzer {
 	 * Implement this method in Part 2
 	 */
 	public static Set<Word> allWords(List<Sentence> sentences) {
-
+		System.out.println(sentences.size());
 		/* IMPLEMENT THIS METHOD! */
+		//Set is implemented by HashSet
+//		Set<Word> hash_Set = new HashSet<>();
+		Set<Word> myWords = new HashSet<>();
+		HashMap<String, Integer> myWordsKV = new HashMap<>();
+		sentences.forEach(obj -> {
+//			System.out.println(obj.getText());
+			//option 1
+			for(String word : obj.getText().toLowerCase().split("[\\p{Punct}\\s]+")) {//regex to split line by punctuation and white space
+//				System.out.println(word);
+				if(myWordsKV.containsKey(word)) {
+					int count = myWordsKV.get(word);
+					myWordsKV.put(word, count+1);	
+				}else {
+					myWordsKV.put(word, 1);
+				}
+			}
+		});
+		System.out.println(myWordsKV.size());
+//		System.out.println(myWordsKV);
 		
-		return null; // this line is here only so this code will compile if you don't modify it
-
+		
+		//option 2 - in object
+		sentences.forEach(obj -> {
+			for(String word : obj.getText().toLowerCase().split("[\\p{Punct}\\s]+")) {//regex to split line by punctuation and white space
+				Word myWord = new Word(word);
+				myWord.increaseTotal(1);
+				if(myWords.size() < 1) {
+					myWords.add(myWord);
+				}else {
+					for(Word w : myWords) {
+//						System.out.println(w);
+						if(w.equals(myWord)) {
+							w.increaseTotal(1);
+						}
+					}
+					myWords.add(myWord);
+				}
+			}
+		});
+		myWords.forEach(o -> {
+			System.out.println("name: " + o.getText() + " count: " + o.getCount() + " total: " + o.getTotal());
+		});
+		System.out.println(myWords.size());
+		
+//		return null; // this line is here only so this code will compile if you don't modify it
+		return myWords;
 	}
 	
 	/*
@@ -77,7 +121,8 @@ public class Analyzer {
 	 * You may modify it as needed.
 	 */
 	public static void main(String[] args) {
-		Analyzer.readFile("reviews");
+		List<Sentence> allSentences = Analyzer.readFile("reviews");//step 1
+		Set<Word> setOfWordObjects = Analyzer.allWords(allSentences);//step 2
 		
 		
 //		if (args.length == 0) {
