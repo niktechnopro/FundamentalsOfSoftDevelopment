@@ -11,8 +11,8 @@ public class Word implements Comparable<Word> {
 	 */
 	public Word(String text) {
 		this.text = text;
-		count = 0;
-		total = 0;
+		count = 0;//how many words
+		total = 0;//value of sentence where these words are
 	}
 	
 	public void increaseTotal(int value) {

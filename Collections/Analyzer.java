@@ -29,10 +29,11 @@ public class Analyzer {
 	            int score = Integer.parseInt(line.substring(0, 2).trim());//converting to int
 	            String text = line.substring(2).trim();
 //	            System.out.println("Score: " + score + " text: " + text);
-	            if(score > -2 && score < 2) {
+	            if(score >= -2 && score <= 2) {
 	            	sentences.add(new Sentence(score, text));
 	            }
-	        }      			
+	        }
+	        scnr.close();//close scanner
 		}catch(Exception ex) {
 			System.out.println("Ooops: " + ex.getMessage());
 		}
@@ -44,62 +45,70 @@ public class Analyzer {
 	 * Implement this method in Part 2
 	 */
 	public static Set<Word> allWords(List<Sentence> sentences) {
-		System.out.println(sentences.size());
+		System.out.println(sentences);
 		/* IMPLEMENT THIS METHOD! */
-		//Set is implemented by HashSet
-//		Set<Word> hash_Set = new HashSet<>();
-		Set<Word> myWords = new HashSet<>();
-		HashMap<String, Integer> myWordsKV = new HashMap<>();
-		sentences.forEach(obj -> {
-//			System.out.println(obj.getText());
-			//option 1
-			for(String word : obj.getText().toLowerCase().split("[\\p{Punct}\\s]+")) {//regex to split line by punctuation and white space
-//				System.out.println(word);
-				if(myWordsKV.containsKey(word)) {
-					int count = myWordsKV.get(word);
-					myWordsKV.put(word, count+1);	
-				}else {
-					myWordsKV.put(word, 1);
-				}
-			}
-		});
-		System.out.println(myWordsKV.size());
-//		System.out.println(myWordsKV);
+		Set<Word> words = new HashSet<>();
+		List<Word> wordsList = new ArrayList<>();	//use list to manipulate information
 		
+		if (sentences == null || sentences.isEmpty()) {//if the list is empty, method returns an empty set.
+		    return words;	
+		}
 		
-		//option 2 - in object
-		sentences.forEach(obj -> {
-			for(String word : obj.getText().toLowerCase().split("[\\p{Punct}\\s]+")) {//regex to split line by punctuation and white space
-				Word myWord = new Word(word);
-				myWord.increaseTotal(1);
-				if(myWords.size() < 1) {
-					myWords.add(myWord);
-				}else {
-					for(Word w : myWords) {
-//						System.out.println(w);
-						if(w.equals(myWord)) {
-							w.increaseTotal(1);
-						}
-					}
-					myWords.add(myWord);
-				}
-			}
-		});
-		myWords.forEach(o -> {
-			System.out.println("name: " + o.getText() + " count: " + o.getCount() + " total: " + o.getTotal());
-		});
-		System.out.println(myWords.size());
+		for(Sentence sentence : sentences) {
+//		    System.out.println("Sentence examined " + sentence.getText());
+		    if (sentence != null) {
+		    	String[] tokens = sentence.getText().toLowerCase().split("[\\p{Punct}\\s]+");//regex to split line by punctuation and white space
+		    	for (String token : tokens) {
+//		    		System.out.println("token: " + token);
+		    		if(token.matches("[a-zA-Z0-9]+")) {
+		    			Word word = new Word(token);
+//		    			int index = wordsList.indexOf(word);//if the word doesn't exist it'll show as -1 
+		    			if (wordsList.contains(word)) {//word is already in the list
+//		    				System.out.println("already in the list: " + word.getText());
+//		    				System.out.println("This word exists " + token + ". Score increased by " + sentence.getScore());
+		    				wordsList.get(wordsList.indexOf(word)).increaseTotal(sentence.getScore());
+		    			} else {//new word	
+		    				word.increaseTotal(sentence.getScore());
+		    				wordsList.add(word);
+////				    	System.out.println(token + " added for the score of " + sentence.getScore());
+		    			}
+		    		}
+		    	}
+		    }
+		}
 		
-//		return null; // this line is here only so this code will compile if you don't modify it
-		return myWords;
+		words = new HashSet<Word> (wordsList);
+		
+		//test - for the same text - object is the same
+//		ArrayList<String> e = new ArrayList<>();
+//		String ex1 = "test1";
+//		String ex2 = "test1";
+//		String ex3 = "test1";
+//		e.add(ex1);
+//		e.add(ex2);
+//		e.add(ex3);
+//		for (String f : e) {
+//			Word word = new Word(f);
+//			System.out.println(word);
+//		}
+		//end of test
+		return words;
 	}
+		
+		
 	
 	/*
 	 * Implement this method in Part 3
 	 */
 	public static Map<String, Double> calculateScores(Set<Word> words) {
-
+		System.out.println(words);
 		/* IMPLEMENT THIS METHOD! */
+		Map<String, Double> myMap = new HashMap<>();
+		if(words == null || words.isEmpty()) return myMap;
+		for(Word w : words) {
+			System.out.println(w);
+		}
+		
 		
 		return null; // this line is here only so this code will compile if you don't modify it
 
@@ -123,7 +132,7 @@ public class Analyzer {
 	public static void main(String[] args) {
 		List<Sentence> allSentences = Analyzer.readFile("reviews");//step 1
 		Set<Word> setOfWordObjects = Analyzer.allWords(allSentences);//step 2
-		
+		Map<String, Double> calculatedScores = Analyzer.calculateScores(setOfWordObjects);//step 3 
 		
 //		if (args.length == 0) {
 //			System.out.println("Please specify the name of the input file");
